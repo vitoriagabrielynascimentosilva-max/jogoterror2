@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Cemitério da Igualdade - Noite de Terror</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=UnifrakturMaguntia&family=EB+Garamond:ital,wght@0,400;0,700;1,400&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+  font-family: 'EB Garamond', serif;
+  color: #d4c5a0;
+}
+
+body {
+  background: 
+    radial-gradient(ellipse at center, rgba(80,0,0,0.4) 0%, rgba(0,0,0,1) 70%),
+    repeating-linear-gradient(45deg, #0a0000 0px, #0a0000 2px, #150000 2px, #150000 4px);
+}
+
+.tela {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+  overflow-y: auto;
+  z-index: 50;
+}
+
+.tela.ativa {
+  display: flex;
+}
+
+/* TELA INICIAL */
+#tela-inicial {
+  background: radial-gradient(circle at 50% 30%, rgba(120,0,0,0.6) 0%, rgba(0,0,0,0.95) 60%);
+  animation: pulsarFundo 4s infinite alternate;
+}
+
+@keyframes pulsarFundo {
+  from { filter: brightness(0.8); }
+  to { filter: brightness(1.2); }
+}
+
+.ornamento-topo, .ornamento, .ornamento-base {
+  font-size: 2rem;
+  color: #8b0000;
+  letter-spacing: 1rem;
+  margin: 1rem 0;
+  text-shadow: 0 0 20px #ff0000, 0 0 40px #8b0000;
+}
+
+.titulo-jogo {
+  font-family: 'UnifrakturMaguntia', cursive;
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  color: #8b0000;
+  text-shadow: 0 0 10px #ff0000, 0 0 20px #8b0000, 2px 2px 0 #000;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  margin: 1rem 0;
+}
+
+.subtitulo {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 1.2rem;
+  color: #d4c5a0;
+  letter-spacing: 0.3em;
+  margin-bottom: 2rem;
+  font-style: italic;
+}
+
+.frase-entrada {
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  font-size: 1.3rem;
+  color: #a89070;
+  margin: 1rem 0;
+  max-width: 600px;
+}
+
+/* BOTÕES */
+.btn {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 1.1rem;
+  padding: 15px 40px;
+  margin: 10px;
+  background: linear-gradient(180deg, #2a0000 0%, #0a0000 100%);
+  color: #d4c5a0;
+  border: 2px solid #8b0000;
+  cursor: pointer;
+  letter-spacing: 0.2em;
+  transition: all 0.3s;
+  box-shadow: 0 0 20px rgba(139,0,0,0.5);
+  z-index: 60;
+}
+
+.btn:hover, .btn:active {
+  background: linear-gradient(180deg, #5a0000 0%, #2a0000 100%);
+  color: #fff;
+  box-shadow: 0 0 40px #ff0000;
+  transform: scale(1.05);
+  border-color: #ff0000;
+}
+
+.btn-principal {
+  font-size: 1.3rem;
+  padding: 18px 50px;
+}
+
+.btn-secundario {
+  font-size: 0.9rem;
+  padding: 10px 30px;
+  opacity: 0.8;
+}
+
+/* TELA HISTÓRIA */
+#tela-historia {
+  background: radial-gradient(circle, rgba(40,0,0,0.9) 0%, #000 80%);
+}
+
+.scroll-historia {
+  max-width: 700px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 30px;
+  background: linear-gradient(180deg, rgba(20,0,0,0.95) 0%, rgba(40,10,10,0.95) 100%);
+  border: 3px double #8b0000;
+  box-shadow: 0 0 40px rgba(139,0,0,0.6);
+}
+
+.scroll-historia h2 {
+  font-family: 'UnifrakturMaguntia', cursive;
+  color: #8b0000;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.texto-historia p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+  text-align: justify;
+  color: #c9b890;
+}
+
+.texto-historia b {
+  color: #d4a0a0;
+}
+
+.aviso {
+  margin-top: 2rem;
+  padding: 20px;
+  background: rgba(139,0,0,0.2);
+  border-left: 4px solid #8b0000;
+  border-right: 4px solid #8b0000;
+  color: #ff6666;
+  font-weight: bold;
+  font-style: italic;
+  text-align: center;
+}
+
+/* TELA CRÉDITOS */
+#tela-creditos {
+  background: radial-gradient(circle, rgba(30,0,0,0.9) 0%, #000 80%);
+}
+
+#tela-creditos h2 {
+  font-family: 'UnifrakturMaguntia', cursive;
+  color: #8b0000;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+#tela-creditos p {
+  font-size: 1.1rem;
+  margin: 0.5rem 0;
+  color: #c9b890;
+}
+
+/* TELA DO JOGO */
+#tela-jogo {
+  padding: 0;
+  background: #000;
+}
+
+#gameCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  cursor: crosshair;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+/* HUD */
+#hud {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 10;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.hud-item {
+  background: rgba(0,0,0,0.8);
+  border: 1px solid #8b0000;
+  padding: 8px 15px;
+  font-family: 'Cinzel Decorative', serif;
+  color: #d4c5a0;
+  font-size: 0.9rem;
+  text-shadow: 0 0 5px #ff0000;
+}
+
+.hud-item span {
+  color: #ff4444;
+  font-weight: bold;
+}
+
+/* Mensagens */
+.msg-oculta {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 25px;
+  background: rgba(0,0,0,0.9);
+  border: 2px solid #8b0000;
+  color: #d4c5a0;
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 1rem;
+  display: none;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.msg-oculta.ativo {
+  display: block;
+}
+
+#msg-escondido { top: 60px; color: #66ff66; border-color: #448844; }
+#msg-interacao { bottom: 150px; color: #ffcc66; border-color: #886622; }
+#msg-pista { top: 100px; color: #ff6666; border-color: #8b0000; max-width: 90%; text-align: center; }
+
+/* Menu do jogo */
+#menu-jogo {
+  position: fixed;
+  top: 60px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  z-index: 15;
+}
+
+.btn-mini {
+  background: rgba(20,0,0,0.9);
+  border: 1px solid #8b0000;
+  color: #d4c5a0;
+  padding: 8px 12px;
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.btn-mini:hover {
+  background: #5a0000;
+  color: #fff;
+}
+
+/* Controles Mobile */
+#controles-mobile {
+  display: flex;
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 20;
+  pointer-events: none;
+}
+
+#joystick, #rotacao-mobile {
+  pointer-events: auto;
+}
+
+#joystick {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.linha-horizontal {
+  display: flex;
+  gap: 5px;
+}
+
+.btn-dir {
+  width: 55px;
+  height: 55px;
+  background: rgba(139,0,0,0.7);
+  border: 2px solid #d4c5a0;
+  color: #fff;
+  font-size: 1.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-dir:active, .btn-dir.ativo {
+  background: #ff0000;
+  transform: scale(0.9);
+}
+
+.btn-central {
+  background: rgba(0,80,0,0.7);
+  border-color: #66ff66;
+}
+
+#rotacao-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+}
+
+.btn-rot {
+  width: 60px;
+  height: 60px;
+  background: rgba(139,0,0,0.7);
+  border: 2px solid #d4c5a0;
+  color: #fff;
+  font-size: 1.8rem;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.btn-rot:active {
+  background: #ff0000;
+  transform: scale(0.9);
+}
+
+.btn-interagir {
+  background: rgba(139,100,0,0.8);
+  border-color: #ffcc66;
+}
+
+/* Modais */
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 20px;
+}
+
+.modal.oculto { display: none; }
+
+.modal-conteudo {
+  background: linear-gradient(180deg, #1a0000 0%, #0a0000 100%);
+  border: 3px double #8b0000;
+  padding: 30px;
+  max-width: 500px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  text-align: center;
+  box-shadow: 0 0 50px rgba(139,0,0,0.8);
+}
+
+.modal-conteudo h3 {
+  font-family: 'UnifrakturMaguntia', cursive;
+  color: #8b0000;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.modal-conteudo p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  color: #c9b890;
+}
+
+#miniMapa {
+  background: #000;
+  border: 2px solid #8b0000;
+  max-width: 100%;
+  height: auto;
+  margin: 1rem auto;
+  display: block;
+}
+
+#lista-pistas {
+  text-align: left;
+  margin-bottom: 1.5rem;
+}
+
+#lista-pistas .pista-item {
+  padding: 10px;
+  margin: 8px 0;
+  background: rgba(139,0,0,0.2);
+  border-left: 3px solid #8b0000;
+  color: #d4c5a0;
+}
+
+#tela-gameover, #tela-vitoria {
+  background: radial-gradient(circle, rgba(80,0,0,0.9) 0%, #000 70%);
+}
+
+.titulo-gameover {
+  font-family: 'UnifrakturMaguntia', cursive;
+  font-size: clamp(3rem, 10vw, 6rem);
+  color: #8b0000;
+  text-shadow: 0 0 30px #ff0000;
+}
+
+.titulo-vitoria {
+  font-family: 'UnifrakturMaguntia', cursive;
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  color: #d4a017;
+  text-shadow: 0 0 30px #ffcc00;
+}
+</style>
+</head>
+<body>
+
+<!-- TELA INICIAL -->
+<div id="tela-inicial" class="tela ativa">
+  <div class="ornamento-topo">✟ ☩ ✟</div>
+  <h1 class="titulo-jogo">CEMITÉRIO<br>DA IGUALDADE</h1>
+  <p class="subtitulo">~ Parnaíba, Piauí ~</p>
+  <p class="frase-entrada">"Algumas histórias nunca devem ser esquecidas..."</p>
+  <div class="ornamento">❦ ☠ ❦</div>
+  <button class="btn btn-principal" onclick="mostrarHistoria()">ENTRAR NO CEMITÉRIO</button>
+  <button class="btn btn-secundario" onclick="mostrarCreditos()">CRÉDITOS</button>
+  <div class="ornamento-base">⚜ ⚰ ⚜</div>
+</div>
+
+<!-- TELA DE HISTÓRIA -->
+<div id="tela-historia" class="tela">
+  <div class="scroll-historia">
+    <h2>✟ A História do Cemitério ✟</h2>
+    <div class="texto-historia">
+      <p>Fundado em <b>1859</b>, no auge do <b>Período Imperial Brasileiro</b>, o <b>Cemitério da Igualdade</b> é um dos mais antigos e importantes cemitérios do Piauí, localizado na cidade de <b>Parnaíba</b>.</p>
+      <p>Seu nome remete ao princípio cristão de que, diante da morte, <b>todos são iguais</b> — ricos e pobres, senhores e escravos, santos e pecadores.</p>
+      <p>O cemitério abriga verdadeiras obras de <b>arte tumular</b>: anjos de pedra, obeliscos, capelas em estilo neoclássico e esculturas barrocas que misturam o sagrado e o profano.</p>
+      <p>Entre seus túmulos repousa <b>Luíza Amélia de Queiroz</b>, considerada a <b>primeira poetisa do Piauí</b>, cuja pena eternizou versos de dor e saudade.</p>
+      <p>Dizem os mais antigos que, nas noites de lua nova, <b>algo desperta</b> entre as lápides... figuras que não deveriam caminhar, vozes que sussurram em latim, e um mal antigo que aguarda quem ousar cruzar seus portões.</p>
+      <p class="aviso">VOCÊ ACORDOU PRESO DENTRO DO CEMITÉRIO.<br>ENCONTRE A SAÍDA ANTES QUE ELES TE ENCONTREM.<br><b>ESCONDA-SE ENTRE AS LÁPIDES.</b></p>
+    </div>
+    <button class="btn btn-principal" onclick="iniciarJogo()">✟ ENTRAR NO CEMITÉRIO ✟</button>
+  </div>
+</div>
+
+<!-- TELA DE CRÉDITOS -->
+<div id="tela-creditos" class="tela">
+  <h2>✟ Créditos ✟</h2>
+  <p><b>Jogo:</b> Cemitério da Igualdade - Noite de Terror</p>
+  <p><b>Inspiração:</b> Evil Dead, Barroco Mineiro, Macabro Latino</p>
+  <p><b>Local:</b> Parnaíba - PI</p>
+  <p><b>Desenvolvimento:</b> HTML5, CSS3, JavaScript (Raycasting)</p>
+  <p class="frase-entrada">"Memento Mori"</p>
+  <button class="btn btn-secundario" onclick="voltarInicio()">VOLTAR</button>
+</div>
+
+<!-- TELA DO JOGO -->
+<div id="tela-jogo" class="tela">
+  <canvas id="gameCanvas"></canvas>
+  
+  <div id="hud">
+    <div class="hud-item">❤ VIDA: <span id="vida">100</span></div>
+    <div class="hud-item">🕯 PISTAS: <span id="pistas">0</span>/4</div>
+    <div class="hud-item">💀 KILLS: <span id="kills">0</span></div>
+  </div>
+  
+  <div id="msg-escondido" class="msg-oculta">🕯 ESCONDIDO ENTRE AS LÁPIDES 🕯</div>
+  <div id="msg-interacao" class="msg-oculta">Pressione E para interagir</div>
+  <div id="msg-pista" class="msg-oculta"></div>
+  
+  <div id="menu-jogo">
+    <button class="btn-mini" onclick="mostrarMapa()">🗺 MAPA</button>
+    <button class="btn-mini" onclick="mostrarPistas()">📜 PISTAS</button>
+    <button class="btn-mini" onclick="pausarJogo()">⏸ PAUSAR</button>
+    <button class="btn-mini" onclick="sairJogo()">✟ SAIR</button>
+  </div>
+  
+  <div id="controles-mobile">
+    <div id="joystick">
+      <button class="btn-dir" data-dir="cima" onmousedown="moverInicio('cima',event)" onmouseup="moverFim('cima',event)" ontouchstart="moverInicio('cima',event)" ontouchend="moverFim('cima',event)">▲</button>
+      <div class="linha-horizontal">
+        <button class="btn-dir" data-dir="esquerda" onmousedown="moverInicio('esquerda',event)" onmouseup="moverFim('esquerda',event)" ontouchstart="moverInicio('esquerda',event)" ontouchend="moverFim('esquerda',event)">◄</button>
+        <button class="btn-dir btn-central" onmousedown="pular()" ontouchstart="pular()">⤴</button>
+        <button class="btn-dir" data-dir="direita" onmousedown="moverInicio('direita',event)" onmouseup="moverFim('direita',event)" ontouchstart="moverInicio('direita',event)" ontouchend="moverFim('direita',event)">►</button>
+      </div>
+      <button class="btn-dir" data-dir="baixo" onmousedown="moverInicio('baixo',event)" onmouseup="moverFim('baixo',event)" ontouchstart="moverInicio('baixo',event)" ontouchend="moverFim('baixo',event)">▼</button>
+    </div>
+    <div id="rotacao-mobile">
+      <button class="btn-rot" onmousedown="rotacionarInicio('esq',event)" onmouseup="rotacionarFim('esq',event)" ontouchstart="rotacionarInicio('esq',event)" ontouchend="rotacionarFim('esq',event)">↺</button>
+      <button class="btn-rot" onmousedown="rotacionarInicio('dir',event)" onmouseup="rotacionarFim('dir',event)" ontouchstart="rotacionarInicio('dir',event)" ontouchend="rotacionarFim('dir',event)">↻</button>
+      <button class="btn-rot btn-interagir" onmousedown="interagir()" ontouchstart="interagir()">✟</button>
+    </div>
+  </div>
+  
+  <div id="modal-pista" class="modal oculto">
+    <div class="modal-conteudo">
+      <h3 id="titulo-pista">✟ Pista Encontrada ✟</h3>
+      <p id="texto-pista"></p>
+      <button class="btn btn-principal" onclick="fecharModal()">FECHAR</button>
+    </div>
+  </div>
+  
+  <div id="modal-mapa" class="modal oculto">
+    <div class="modal-conteudo">
+      <h3>🗺 Mapa do Cemitério</h3>
+      <canvas id="miniMapa" width="300" height="300"></canvas>
+      <button class="btn btn-principal" onclick="fecharModal()">FECHAR</button>
+    </div>
+  </div>
+  
+  <div id="modal-pistas-lista" class="modal oculto">
+    <div class="modal-conteudo">
+      <h3>📜 Pistas Coletadas</h3>
+      <div id="lista-pistas"></div>
+      <button class="btn btn-principal" onclick="fecharModal()">FECHAR</button>
+    </div>
+  </div>
+</div>
+
+<!-- Tela de Game Over -->
+<div id="tela-gameover" class="tela">
+  <h1 class="titulo-gameover">VOCÊ MORREU</h1>
+  <p class="frase-entrada">O cemitério reclamou mais uma alma...</p>
+  <p>Pontuação: <span id="pontuacao-final">0</span></p>
+  <button class="btn btn-principal" onclick="reiniciarJogo()">TENTAR NOVAMENTE</button>
+  <button class="btn btn-secundario" onclick="voltarInicio()">MENU INICIAL</button>
+</div>
+
+<!-- Tela de Vitória -->
+<div id="tela-vitoria" class="tela">
+  <h1 class="titulo-vitoria">VOCÊ ESCAPOU!</h1>
+  <p class="frase-entrada">Mas o cemitério jamais te esquecerá...</p>
+  <p>Pontuação Final: <span id="pontuacao-vitoria">0</span></p>
+  <button class="btn btn-principal" onclick="reiniciarJogo()">JOGAR NOVAMENTE</button>
+  <button class="btn btn-secundario" onclick="voltarInicio()">MENU</button>
+</div>
+
+<script>
+const MAPA = [
+  [3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],
+  [3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3],
+  [3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3],
+  [3,0,0,1,0,0,2,0,0,1,0,0,0,2,0,0,1,0,0,2,0,0,0,3],
+  [3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3],
+  [3,0,0,0,2,0,0,1,0,0,0,2,0,0,0,1,0,0,2,0,0,0,0,3],
+  [3,0,0,0,0,0,0,0,0,0,0,0,5,0,0,0,0,0,0,0,2,0,0,3],
+  [3,0,1,0,0,0,2,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,3],
+  [3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,1,0,3],
+  [3,0,0,0,2,0,0,1,0,0,0,2,0,0,0,0,1,0,0,0,0,0,0,3],
+  [3,0,0,0,0,0,0,0,0,0,0,0,6,0,0,0,0,0,0,0,2,0,0,3],
+  [3,0,2,0,0,1,0,0,0,2,0,0,0,0,0,1,0,0,0,0,0,0,0,3],
+  [3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,2,0,3],
+  [3,0,0,1,0,0,2,0,0,0,1,0,0,0,2,0,0,0,0,0,0,0,0,3],
+  [3,0,0,0,0,0,0,0,0,0,0,0,5,0,0,0,0,0,0,0,1,0,0,3],
+  [3,0,0,0,2,0,0,1,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,3],
+  [3,0,1,0,0,0,0,0,0,2,0,0,0,0,0,0,0,1,0,0,0,2,0,3],
+  [3,0,0,0,0,0,1,0,0,0,0,0,6,0,0,0,0,0,0,0,0,0,0,3],
+  [3,0,0,2,0,0,0,0,0,0,1,0,0,0,1,0,0,0,2,0,0,0,0,3],
+  [3,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,1,0,0,3],
+  [3,0,1,0,0,2,0,0,0,0,0,1,0,0,0,2,0,0,0,0,0,0,0,3],
+  [3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,3],
+  [3,0,0,0,1,0,0,2,0,0,1,0,0,0,0,0,1,0,0,0,0,0,4,3],
+  [3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3]
+];
+
+const LARGURA_MAPA = MAPA[0].length;
+const ALTURA_MAPA = MAPA.length;
+
+const jogador = {
+  x: 1.5, y: 1.5,
+  angulo: 0,
+  vida: 100,
+  velocidade: 0.04,
+  rotacaoVel: 0.04,
+  pulo: 0,
+  puloVel: 0,
+  escondido: false,
+  pistas: 0,
+  kills: 0
+};
+
+let criaturas = [];
+const TIPOS_CRIATURA = [
+  { nome: 'Deadite', cor: '#8b0000', corOlho: '#ffff00', velocidade: 0.012, vida: 3, dano: 15 },
+  { nome: 'Alma Penada', cor: '#2a0030', corOlho: '#ff00ff', velocidade: 0.015, vida: 2, dano: 10 },
+  { nome: 'Coveiro Maldito', cor: '#3a2a1a', corOlho: '#ff4400', velocidade: 0.01, vida: 4, dano: 20 }
+];
+
+const PISTAS = [
+  { x: 8.5, y: 3.5, titulo: '✟ Fundação (1859)', texto: 'O Cemitério da Igualdade foi fundado em 1859, durante o Segundo Reinado de D. Pedro II.' },
+  { x: 18.5, y: 8.5, titulo: '✟ Arte Tumular', texto: 'Suas esculturas em mármore e bronze representam anjos, santos e figuras barrocas.' },
+  { x: 5.5, y: 16.5, titulo: '✟ Luíza Amélia', texto: 'Luíza Amélia de Queiroz (1863-1904), primeira poetisa do Piauí, repousa aqui.' },
+  { x: 20.5, y: 19.5, titulo: '✟ O Nome "Igualdade"', texto: 'O nome vem do princípio cristão: diante da morte, todos são iguais.' }
+];
+
+let pistasColetadas = [];
+let pontuacao = 0;
+let jogoAtivo = false;
+let jogoPausado = false;
+
+const teclas = {};
+const controlesMobile = { cima: false, baixo: false, esquerda: false, direita: false, rotEsq: false, rotDir: false };
+
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+let W, H;
+
+function redimensionarCanvas() {
+  W = window.innerWidth;
+  H = window.innerHeight;
+  canvas.width = W;
+  canvas.height = H;
+}
+window.addEventListener('resize', redimensionarCanvas);
+redimensionarCanvas();
+
+function mostrarTela(id) {
+  document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
+  document.getElementById(id).classList.add('ativa');
+}
+
+function mostrarHistoria() { mostrarTela('tela-historia'); }
+function mostrarCreditos() { mostrarTela('tela-creditos'); }
+function voltarInicio() { 
+  jogoAtivo = false;
+  mostrarTela('tela-inicial'); 
+}
+
+function iniciarJogo() {
+  mostrarTela('tela-jogo');
+  redimensionarCanvas();
+  resetarJogo();
+  jogoAtivo = true;
+  jogoPausado = false;
+  requestAnimationFrame(gameLoop);
+}
+
+function resetarJogo() {
+  jogador.x = 1.5; jogador.y = 1.5; jogador.angulo = 0;
+  jogador.vida = 100; jogador.pulo = 0; jogador.puloVel = 0;
+  jogador.pistas = 0; jogador.kills = 0;
+  pistasColetadas = []; pontuacao = 0;
+  
+  criaturas = [];
+  const posicoesCriaturas = [{x: 10.5, y: 10.5}, {x: 18.5, y: 5.5}, {x: 5.5, y: 18.5}, {x: 15.5, y: 15.5}, {x: 20.5, y: 12.5}, {x: 8.5, y: 20.5}];
+  posicoesCriaturas.forEach((p, i) => {
+    const tipo = TIPOS_CRIATURA[i % TIPOS_CRIATURA.length];
+    criaturas.push({ x: p.x, y: p.y, tipo: tipo, vida: tipo.vida, angulo: Math.random() * Math.PI * 2, estado: 'vagar', tempoAtaque: 0, animacao: Math.random() * Math.PI * 2 });
+  });
+  atualizarHUD();
+}
+
+function reiniciarJogo() { iniciarJogo(); }
+function sairJogo() { jogoAtivo = false; voltarInicio(); }
+function pausarJogo() {
+  jogoPausado = !jogoPausado;
+  if (!jogoPausado) requestAnimationFrame(gameLoop);
+}
+
+// Teclado
+document.addEventListener('keydown', (e) => {
+  const key = e.key.toLowerCase();
+  teclas[key] = true;
+  if (e.key === 'ArrowUp') teclas['arrowup'] = true;
+  if (e.key === 'ArrowDown') teclas['arrowdown'] = true;
+  if (e.key === 'ArrowLeft') teclas['arrowleft'] = true;
+  if (e.key === 'ArrowRight') teclas['arrowright'] = true;
+  if (e.key === ' ' || e.code === 'Space') { e.preventDefault(); pular(); }
+  if (key === 'e') interagir();
+});
+
+document.addEventListener('keyup', (e) => {
+  const key = e.key.toLowerCase();
+  teclas[key] = false;
+  if (e.key === 'ArrowUp') teclas['arrowup'] = false;
+  if (e.key === 'ArrowDown') teclas['arrowdown'] = false;
+  if (e.key === 'ArrowLeft') teclas['arrowleft'] = false;
+  if (e.key === 'ArrowRight') teclas['arrowright'] = false;
+});
+
+// Controles Mobile
+function moverInicio(dir, e) { if (e) e.preventDefault(); controlesMobile[dir] = true; if (e && e.currentTarget) e.currentTarget.classList.add('ativo'); }
+function moverFim(dir, e) { if (e) e.preventDefault(); controlesMobile[dir] = false; if (e && e.currentTarget) e.currentTarget.classList.remove('ativo'); }
+function rotacionarInicio(dir, e) { if (e) e.preventDefault(); if (dir === 'esq') controlesMobile.rotEsq = true; else controlesMobile.rotDir = true; }
+function rotacionarFim(dir, e) { if (e) e.preventDefault(); if (dir === 'esq') controlesMobile.rotEsq = false; else controlesMobile.rotDir = false; }
+
+let touchStartX = 0;
+let touchAtivo = false;
+canvas.addEventListener('touchstart', (e) => {
+  if (e.target === canvas) { touchStartX = e.touches[0].clientX; touchAtivo = true; }
+}, { passive: true });
+
+canvas.addEventListener('touchmove', (e) => {
+  if (!touchAtivo) return;
+  const dx = e.touches[0].clientX - touchStartX;
+  jogador.angulo += dx * 0.005;
+  touchStartX = e.touches[0].clientX;
+}, { passive: true });
+
+canvas.addEventListener('touchend', () => { touchAtivo = false; });
+
+function pular() { if (jogador.pulo === 0) jogador.puloVel = 0.12; }
+
+function interagir() {
+  PISTAS.forEach((pista, idx) => {
+    if (pistasColetadas.includes(idx)) return;
+    const dx = jogador.x - pista.x;
+    const dy = jogador.y - pista.y;
+    if (Math.sqrt(dx*dx + dy*dy) < 1.5) {
+      pistasColetadas.push(idx);
+      jogador.pistas++;
+      pontuacao += 10;
+      mostrarPistaModal(pista);
+      atualizarHUD();
+    }
+  });
+}
+
+function mostrarPistaModal(pista) {
+  document.getElementById('titulo-pista').textContent = pista.titulo;
+  document.getElementById('texto-pista').textContent = pista.texto;
+  document.getElementById('modal-pista').classList.remove('oculto');
+  jogoPausado = true;
+}
+
+function fecharModal() {
+  document.querySelectorAll('.modal').forEach(m => m.classList.add('oculto'));
+  jogoPausado = false;
+  if (jogoAtivo) requestAnimationFrame(gameLoop);
+}
+
+function mostrarMapa() {
+  jogoPausado = true;
+  document.getElementById('modal-mapa').classList.remove('oculto');
+  desenharMiniMapa();
+}
+
+function mostrarPistas() {
+  jogoPausado = true;
+  const lista = document.getElementById('lista-pistas');
+  if (pistasColetadas.length === 0) {
+    lista.innerHTML = '<p style="text-align:center;color:#888;">Nenhuma pista encontrada ainda...</p>';
+  } else {
+    lista.innerHTML = pistasColetadas.map(idx => {
+      const p = PISTAS[idx];
+      return `<div class="pista-item"><b>${p.titulo}</b><br>${p.texto}</div>`;
+    }).join('');
+  }
+  document.getElementById('modal-pistas-lista').classList.remove('oculto');
+}
+
+function desenharMiniMapa() {
+  const mc = document.getElementById('miniMapa');
+  const mctx = mc.getContext('2d');
+  const tam = 300;
+  const celula = tam / LARGURA_MAPA;
+  mctx.fillStyle = '#000';
+  mctx.fillRect(0, 0, tam, tam);
+  
+  for (let y = 0; y < ALTURA_MAPA; y++) {
+    for (let x = 0; x < LARGURA_MAPA; x++) {
+      const c = MAPA[y][x];
+      if (c === 1) mctx.fillStyle = '#555';
+      else if (c === 2) mctx.fillStyle = '#0a3a0a';
+      else if (c === 3) mctx.fillStyle = '#3a2a1a';
+      else if (c === 4) mctx.fillStyle = '#ffcc00';
+      else if (c === 5) mctx.fillStyle = '#8b0000';
+      else if (c === 6) mctx.fillStyle = '#4a4a4a';
+      else mctx.fillStyle = '#1a0000';
+      mctx.fillRect(x*celula, y*celula, celula, celula);
+    }
+  }
+  
+  PISTAS.forEach((p, i) => {
+    if (!pistasColetadas.includes(i)) {
+      mctx.fillStyle = '#ff00ff';
+      mctx.beginPath(); mctx.arc(p.x*celula, p.y*celula, 4, 0, Math.PI*2); mctx.fill();
+    }
+  });
+  
+  mctx.fillStyle = '#ff0000';
+  criaturas.forEach(c => {
+    mctx.beginPath(); mctx.arc(c.x*celula, c.y*celula, 4, 0, Math.PI*2); mctx.fill();
+  });
+  
+  mctx.fillStyle = '#00ff00';
+  mctx.beginPath(); mctx.arc(jogador.x*celula, jogador.y*celula, 5, 0, Math.PI*2); mctx.fill();
+}
+
+function atualizar() {
+  if (!jogoAtivo || jogoPausado) return;
+  
+  if (teclas['arrowleft'] || controlesMobile.rotEsq) jogador.angulo -= jogador.rotacaoVel;
+  if (teclas['arrowright'] || controlesMobile.rotDir) jogador.angulo += jogador.rotacaoVel;
+  
+  let moveX = 0, moveY = 0;
+  if (teclas['w'] || teclas['arrowup'] || controlesMobile.cima) {
+    moveX += Math.cos(jogador.angulo) * jogador.velocidade;
+    moveY += Math.sin(jogador.angulo) * jogador.velocidade;
+  }
+  if (teclas['s'] || teclas['arrowdown'] || controlesMobile.baixo) {
+    moveX -= Math.cos(jogador.angulo) * jogador.velocidade;
+    moveY -= Math.sin(jogador.angulo) * jogador.velocidade;
+  }
+  if (teclas['a'] || controlesMobile.esquerda) {
+    moveX += Math.cos(jogador.angulo - Math.PI/2) * jogador.velocidade;
+    moveY += Math.sin(jogador.angulo - Math.PI/2) * jogador.velocidade;
+  }
+  if (teclas['d'] || controlesMobile.direita) {
+    moveX += Math.cos(jogador.angulo + Math.PI/2) * jogador.velocidade;
+    moveY += Math.sin(jogador.angulo + Math.PI/2) * jogador.velocidade;
+  }
+  
+  const margem = 0.2;
+  const novaX = jogador.x + moveX;
+  const novaY = jogador.y + moveY;
+  
+  const celulaX = Math.floor(novaX + (moveX > 0 ? margem : -margem));
+  const celulaYAtual = Math.floor(jogador.y);
+  if (celulaX >= 0 && celulaX < LARGURA_MAPA && celulaYAtual >= 0 && celulaYAtual < ALTURA_MAPA) {
+    if (MAPA[celulaYAtual][celulaX] === 0 || MAPA[celulaYAtual][celulaX] === 4) jogador.x = novaX;
+  }
+  
+  const celulaY = Math.floor(novaY + (moveY > 0 ? margem : -margem));
+  const celulaXAtual = Math.floor(jogador.x);
+  if (celulaXAtual >= 0 && celulaXAtual < LARGURA_MAPA && celulaY >= 0 && celulaY < ALTURA_MAPA) {
+    if (MAPA[celulaY][celulaXAtual] === 0 || MAPA[celulaY][celulaXAtual] === 4) jogador.y = novaY;
+  }
+  
+  if (jogador.pulo > 0 || jogador.puloVel !== 0) {
+    jogador.pulo += jogador.puloVel;
+    jogador.puloVel -= 0.008;
+    if (jogador.pulo < 0) { jogador.pulo = 0; jogador.puloVel = 0; }
+  }
+  
+  jogador.escondido = false;
+  for (let dy = -1; dy <= 1; dy++) {
+    for (let dx = -1; dx <= 1; dx++) {
+      const cx = Math.floor(jogador.x) + dx;
+      const cy = Math.floor(jogador.y) + dy;
+      if (cy >= 0 && cy < ALTURA_MAPA && cx >= 0 && cx < LARGURA_MAPA) {
+        if (MAPA[cy][cx] === 1) {
+          if (Math.abs(jogador.x - (cx + 0.5)) < 1.3 && Math.abs(jogador.y - (cy + 0.5)) < 1.3) jogador.escondido = true;
+        }
+      }
+    }
+  }
+  
+  const msgEscondido = document.getElementById('msg-escondido');
+  if (jogador.escondido) msgEscondido.classList.add('ativo'); else msgEscondido.classList.remove('ativo');
+  
+  let pistaProxima = false;
+  PISTAS.forEach((p, i) => {
+    if (pistasColetadas.includes(i)) return;
+    if (Math.sqrt((jogador.x - p.x)**2 + (jogador.y - p.y)**2) < 1.5) pistaProxima = true;
+  });
+  const msgInt = document.getElementById('msg-interacao');
+  if (pistaProxima) msgInt.classList.add('ativo'); else msgInt.classList.remove('ativo');
+  
+  if (MAPA[Math.floor(jogador.y)][Math.floor(jogador.x)] === 4) {
+    if (jogador.pistas >= 4) vencer();
+    else {
+      const msgPista = document.getElementById('msg-pista');
+      msgPista.textContent = `Você precisa de todas as 4 pistas! (${jogador.pistas}/4)`;
+      msgPista.classList.add('ativo');
+      setTimeout(() => msgPista.classList.remove('ativo'), 2000);
+    }
+  }
+  
+  atualizarCriaturas();
+}
+
+function atualizarCriaturas() {
+  criaturas.forEach(c => {
+    c.animacao += 0.05;
+    const dx = jogador.x - c.x;
+    const dy = jogador.y - c.y;
+    const dist = Math.sqrt(dx*dx + dy*dy);
+    const podeVer = !jogador.escondido && dist < 8;
+    
+    if (podeVer && verificarLinhaVisao(c.x, c.y, jogador.x, jogador.y)) c.estado = 'perseguir';
+    else if (c.estado === 'perseguir' && dist > 10) c.estado = 'vagar';
+    
+    if (c.estado === 'perseguir') {
+      const ang = Math.atan2(dy, dx);
+      const nx = c.x + Math.cos(ang) * c.tipo.velocidade;
+      const ny = c.y + Math.sin(ang) * c.tipo.velocidade;
+      if (MAPA[Math.floor(ny)][Math.floor(nx)] === 0) { c.x = nx; c.y = ny; }
+      else {
+        if (MAPA[Math.floor(c.y)][Math.floor(nx)] === 0) c.x = nx;
+        else if (MAPA[Math.floor(ny)][Math.floor(c.x)] === 0) c.y = ny;
+      }
+      if (dist < 0.8) {
+        c.tempoAtaque++;
+        if (c.tempoAtaque > 40) {
+          jogador.vida -= c.tipo.dano;
+          c.tempoAtaque = 0;
+          atualizarHUD();
+          if (jogador.vida <= 0) gameOver();
+        }
+      } else { c.tempoAtaque = 0; }
+    } else {
+      if (Math.random() < 0.02) c.angulo = Math.random() * Math.PI * 2;
+      const nx = c.x + Math.cos(c.angulo) * c.tipo.velocidade * 0.5;
+      const ny = c.y + Math.sin(c.angulo) * c.tipo.velocidade * 0.5;
+      if (MAPA[Math.floor(ny)][Math.floor(nx)] === 0) { c.x = nx; c.y = ny; }
+      else c.angulo = Math.random() * Math.PI * 2;
+    }
+  });
+}
+
+function verificarLinhaVisao(x1, y1, x2, y2) {
+  for (let i = 1; i < 20; i++) {
+    const t = i / 20;
+    const x = x1 + (x2 - x1) * t;
+    const y = y1 + (y2 - y1) * t;
+    const c = MAPA[Math.floor(y)][Math.floor(x)];
+    if (c !== 0 && c !== 4) return false;
+  }
+  return true;
+}
+
+function renderizar() {
+  const gradCeu = ctx.createLinearGradient(0, 0, 0, H/2);
+  gradCeu.addColorStop(0, '#1a0000'); gradCeu.addColorStop(0.5, '#2a0505'); gradCeu.addColorStop(1, '#0a0000');
+  ctx.fillStyle = gradCeu; ctx.fillRect(0, 0, W, H/2);
+  
+  const luaX = W * 0.75, luaY = H * 0.2, luaR = Math.min(W, H) * 0.08;
+  const gradLua = ctx.createRadialGradient(luaX, luaY, 0, luaX, luaY, luaR);
+  gradLua.addColorStop(0, '#ffcccc'); gradLua.addColorStop(0.3, '#ff6666'); gradLua.addColorStop(0.7, '#8b0000'); gradLua.addColorStop(1, 'rgba(139,0,0,0)');
+  ctx.fillStyle = gradLua; ctx.beginPath(); ctx.arc(luaX, luaY, luaR * 1.5, 0, Math.PI * 2); ctx.fill();
+  
+  const gradChao = ctx.createLinearGradient(0, H/2, 0, H);
+  gradChao.addColorStop(0, '#0a0000'); gradChao.addColorStop(0.5, '#1a0a0a'); gradChao.addColorStop(1, '#050000');
+  ctx.fillStyle = gradChao; ctx.fillRect(0, H/2, W, H/2);
+  
+  const FOV = Math.PI / 3;
+  const numRaios = Math.min(W, 400);
+  const distProjecao = (W / 2) / Math.tan(FOV / 2);
+  const zBuffer = new Array(numRaios);
+  
+  for (let i = 0; i < numRaios; i++) {
+    const angRay = jogador.angulo - FOV/2 + (i / numRaios) * FOV;
+    const resultado = lancarRaio(jogador.x, jogador.y, angRay);
+    
+    if (resultado.dist > 0) {
+      const distCorrigida = resultado.dist * Math.cos(angRay - jogador.angulo);
+      zBuffer[i] = distCorrigida;
+      
+      const alturaParede = (1 / distCorrigida) * distProjecao;
+      const topo = (H - alturaParede) / 2 - jogador.pulo * 100;
+      const larguraColuna = W / numRaios + 1;
+      const xPos = i * (W / numRaios);
+      
+      let corBase = '#7a6a5a', corEscura = '#4a3a2a';
+      const tipo = MAPA[resultado.mapY][resultado.mapX];
+      if (tipo === 2) { corBase = '#2a4a2a'; corEscura = '#1a2a1a'; }
+      else if (tipo === 3) { corBase = '#4a3a2a'; corEscura = '#2a1a0a'; }
+      else if (tipo === 4) { corBase = '#aa8822'; corEscura = '#554411'; }
+      else if (tipo === 5) { corBase = '#5a2a2a'; corEscura = '#2a0a0a'; }
+      else if (tipo === 6) { corBase = '#6a6a6a'; corEscura = '#3a3a3a'; }
+      
+      const cor = resultado.lado === 0 ? corBase : corEscura;
+      const sombra = Math.max(0.2, 1 - distCorrigida / 15);
+      
+      const gradParede = ctx.createLinearGradient(0, topo, 0, topo + alturaParede);
+      gradParede.addColorStop(0, escurecer(cor, sombra * 0.5));
+      gradParede.addColorStop(0.5, escurecer(cor, sombra));
+      gradParede.addColorStop(1, escurecer(cor, sombra * 0.3));
+      ctx.fillStyle = gradParede;
+      ctx.fillRect(xPos, topo, larguraColuna, alturaParede);
+      
+      if (tipo === 2 && distCorrigida < 10) {
+        const cx = xPos + larguraColuna/2;
+        ctx.fillStyle = escurecer('#1a3a1a', sombra);
+        for (let camada = 0; camada < 3; camada++) {
+          const offset = camada * 5;
+          ctx.beginPath();
+          // PROTEÇÃO CONTRA RAIO NEGATIVO (IndexSizeError)
+          const rx = Math.max(1, (larguraColuna * 3) - offset);
+          const ry = Math.max(1, (alturaParede * 0.45 * 0.6) - offset);
+          ctx.ellipse(cx, topo + (alturaParede * 0.45 * 0.3) + offset, rx, ry, 0, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    } else {
+      zBuffer[i] = 999;
+    }
+  }
+  
+  renderizarCriaturas(zBuffer, numRaios, FOV, distProjecao);
+  renderizarPistas(zBuffer, numRaios, FOV, distProjecao);
+  
+  ctx.strokeStyle = 'rgba(200, 150, 100, 0.5)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(W/2 - 10, H/2); ctx.lineTo(W/2 + 10, H/2);
+  ctx.moveTo(W/2, H/2 - 10); ctx.lineTo(W/2, H/2 + 10);
+  ctx.stroke();
+}
+
+function lancarRaio(ox, oy, ang) {
+  const cos = Math.cos(ang), sin = Math.sin(ang);
+  let mapX = Math.floor(ox), mapY = Math.floor(oy);
+  const deltaDistX = Math.abs(1 / cos), deltaDistY = Math.abs(1 / sin);
+  let stepX, stepY, sideDistX, sideDistY;
+  
+  if (cos < 0) { stepX = -1; sideDistX = (ox - mapX) * deltaDistX; }
+  else { stepX = 1; sideDistX = (mapX + 1 - ox) * deltaDistX; }
+  if (sin < 0) { stepY = -1; sideDistY = (oy - mapY) * deltaDistY; }
+  else { stepY = 1; sideDistY = (mapY + 1 - oy) * deltaDistY; }
+  
+  let hit = false, lado = 0, iter = 0;
+  while (!hit && iter < 50) {
+    if (sideDistX < sideDistY) { sideDistX += deltaDistX; mapX += stepX; lado = 0; }
+    else { sideDistY += deltaDistY; mapY += stepY; lado = 1; }
+    if (mapX < 0 || mapX >= LARGURA_MAPA || mapY < 0 || mapY >= ALTURA_MAPA) break;
+    if (MAPA[mapY][mapX] > 0) hit = true;
+    iter++;
+  }
+  if (!hit) return { dist: 0 };
+  let dist = lado === 0 ? (mapX - ox + (1 - stepX) / 2) / cos : (mapY - oy + (1 - stepY) / 2) / sin;
+  return { dist: dist, mapX: mapX, mapY: mapY, lado: lado };
+}
+
+function renderizarCriaturas(zBuffer, numRaios, FOV, distProjecao) {
+  const criaturasOrdenadas = criaturas.map(c => {
+    const dx = c.x - jogador.x, dy = c.y - jogador.y;
+    return { c, dist: Math.sqrt(dx*dx + dy*dy) };
+  }).sort((a, b) => b.dist - a.dist);
+  
+  criaturasOrdenadas.forEach(({c, dist}) => {
+    const dx = c.x - jogador.x, dy = c.y - jogador.y;
+    let angCriatura = Math.atan2(dy, dx) - jogador.angulo;
+    while (angCriatura > Math.PI) angCriatura -= Math.PI * 2;
+    while (angCriatura < -Math.PI) angCriatura += Math.PI * 2;
+    if (Math.abs(angCriatura) > FOV / 2 + 0.3) return;
+    const telaX = (W / 2) + (angCriatura / (FOV / 2)) * (W / 2);
+    const tamanho = (1 / dist) * distProjecao * 0.8;
+    const topo = (H - tamanho) / 2 - jogador.pulo * 100;
+    const colInicio = Math.max(0, Math.floor((telaX - tamanho/2) / (W / numRaios)));
+    const colFim = Math.min(numRaios - 1, Math.floor((telaX + tamanho/2) / (W / numRaios)));
+    
+    let visivel = false;
+    for (let i = colInicio; i <= colFim; i++) {
+      if (zBuffer[i] > dist) { visivel = true; break; }
+    }
+    if (!visivel) return;
+    
+    ctx.fillStyle = c.tipo.cor;
+    ctx.beginPath();
+    ctx.arc(telaX, topo + tamanho * 0.15, Math.max(2, tamanho * 0.15), 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillRect(telaX - tamanho * 0.15, topo + tamanho * 0.25, tamanho * 0.3, tamanho * 0.4);
+  });
+}
+
+function renderizarPistas(zBuffer, numRaios, FOV, distProjecao) {
+  PISTAS.forEach((p, idx) => {
+    if (pistasColetadas.includes(idx)) return;
+    const dx = p.x - jogador.x, dy = p.y - jogador.y;
+    const dist = Math.sqrt(dx*dx + dy*dy);
+    let ang = Math.atan2(dy, dx) - jogador.angulo;
+    while (ang > Math.PI) ang -= Math.PI * 2;
+    while (ang < -Math.PI) ang += Math.PI * 2;
+    if (Math.abs(ang) > FOV / 2) return;
+    const telaX = (W / 2) + (ang / (FOV / 2)) * (W / 2);
+    const tamanho = (1 / dist) * distProjecao * 0.3;
+    const topo = (H - tamanho) / 2 - jogador.pulo * 100 + tamanho * 0.3;
+    const col = Math.floor(telaX / (W / numRaios));
+    if (col < 0 || col >= numRaios || zBuffer[col] < dist) return;
+    
+    ctx.fillStyle = 'rgba(139, 0, 139, 0.8)';
+    ctx.beginPath(); ctx.arc(telaX, topo, Math.max(2, tamanho), 0, Math.PI * 2); ctx.fill();
+  });
+}
+
+function escurecer(corHex, fator) {
+  const r = parseInt(corHex.substr(1,2), 16);
+  const g = parseInt(corHex.substr(3,2), 16);
+  const b = parseInt(corHex.substr(5,2), 16);
+  return `rgb(${Math.floor(r*fator)}, ${Math.floor(g*fator)}, ${Math.floor(b*fator)})`;
+}
+
+function atualizarHUD() {
+  document.getElementById('vida').textContent = Math.max(0, Math.floor(jogador.vida));
+  document.getElementById('pistas').textContent = jogador.pistas;
+  document.getElementById('kills').textContent = jogador.kills;
+}
+
+function gameOver() {
+  jogoAtivo = false;
+  document.getElementById('pontuacao-final').textContent = pontuacao;
+  mostrarTela('tela-gameover');
+}
+
+function vencer() {
+  jogoAtivo = false;
+  pontuacao += 100;
+  document.getElementById('pontuacao-vitoria').textContent = pontuacao;
+  mostrarTela('tela-vitoria');
+}
+
+function gameLoop() {
+  if (!jogoAtivo) return;
+  if (!jogoPausado) {
+    atualizar();
+    renderizar();
+  }
+  requestAnimationFrame(gameLoop);
+}
+</script>
+</body>
+</html>
